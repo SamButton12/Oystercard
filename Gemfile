@@ -2,5 +2,9 @@
 
 source "https://rubygems.org"
 
-# gem "rails"
-source "https://rubygems.org"
+group :development, :test do
+  #write gem "<name of gems we expect to use>"
+  gem "rspec" 
+end
+
+
