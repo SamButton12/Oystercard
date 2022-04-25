@@ -10,3 +10,10 @@ describe Oystercard do
     subject.add_money
     expect(subject).to respond_to :add_money
   end
+  
+  it 'responds to balance' do
+    subject.balance
+    expect(subject).to respond_to :balance
+  end
+
+end
