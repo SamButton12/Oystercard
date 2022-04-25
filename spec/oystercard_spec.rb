@@ -12,6 +12,13 @@ describe Oystercard do
     expect(subject).to respond_to(:add_money).with(1).argument
   end
 
+  describe '#add money' do
+    it 'does not allow user to add more than maximum funds' do
+      subject.add_money(90)
+      expect { subject.add_money(1) }.to raise_error 'funds cannot be added: maximum balance £90'
+    end
+  end
+
   it 'responds to balance' do
     subject.balance
     expect(subject).to respond_to :balance
