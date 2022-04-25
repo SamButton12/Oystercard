@@ -8,5 +8,8 @@ class Oystercard
   def add_money(money)
     @balance += money
   end
-
+  
+  def deduct_money(money)
+    @balance -= money
+  end
 end

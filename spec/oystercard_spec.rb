@@ -25,4 +25,7 @@ describe Oystercard do
     expect(subject).to be_instance_of(Oystercard)
   end
 
+  it 'responds to deduct_money with 1 argument' do
+    expect(subject).to respond_to(:deduct_money).with(1).argument
+  end
 end
