@@ -1,21 +1,14 @@
 require 'oystercard'
 
 describe Oystercard do
-  # arrange
-  # subject.add_money
-  # assert
-  # expect(subject.add_money).to eq
+  
+  let(:station){ double :station }
 
-  #plan to remove this test when refactoring once we have respond to money with 1 argument working
-
-  # it 'responds to balance' do
-  #   subject.balance
-  #   expect(subject).to respond_to :balance
-  # end
-
-  # it 'responds to add_money with 1 argument' do
-  #   expect(subject).to respond_to(:add_money).with(1).argument
-  # end
+  it 'stores the entry station' do 
+    subject.add_money(20)
+    subject.touch_in(station)
+    expect(subject.entry_station).to eq station
+  end
 
   it 'creates an instance of Oystercard' do
     expect(subject).to be_instance_of(Oystercard)
@@ -31,10 +24,6 @@ describe Oystercard do
   it 'returns balance' do
     expect(subject.balance).to eq(0)
   end
-
-  # it 'responds to deduct_money with 1 argument' do
-  #   expect(subject).to respond_to(:touch_out)
-  # end
   
   it 'checks that new oystercard is not in journey' do
     expect(subject.in_journey?).to be false
@@ -43,12 +32,12 @@ describe Oystercard do
   describe '#touch_in' do
     it 'when card touches in, in journey is changed to true' do
       subject.add_money(Oystercard::MIN_FARE)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
 
     it 'it does not let you touch in if balance is less than min fare' do
-      expect { subject.touch_in }.to raise_error('Insufficient balance')
+      expect { subject.touch_in(station) }.to raise_error('Insufficient balance')
     end
 
   end
@@ -56,15 +45,22 @@ describe Oystercard do
   describe '#touch_out' do
     it 'when card touches out, in journey is changed to false' do  
       subject.add_money(Oystercard::MIN_FARE)
-      subject.touch_in
+      subject.touch_in(station)
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
     
-    it 'deducts fare from balance when card is touched out' do
+    it 'deducts fare from balance' do
       subject.add_money(Oystercard::MIN_FARE)
-      subject.touch_in
+      subject.touch_in(station)
       expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MIN_FARE)
+    end
+
+    it 'resets entry station to nil' do
+      subject.add_money(Oystercard::MIN_FARE)
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
     end
 
   end
