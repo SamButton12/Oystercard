@@ -11,31 +11,38 @@ class Oystercard
   end
 
   def add_money(money)
-    fail "funds cannot be added: maximum balance £#{MAX_BALANCE}" if max_balance_exceeded
+    check_if_max_balance_exceeded(money)
     @balance += money
   end
   
-  def deduct_money(money)
-    @balance -= money
-  end
-
-  def max_balance_exceeded
-    @balance >= MAX_BALANCE
-  end
-
   def in_journey?
     @in_journey
   end
-
+  
   def touch_in
-    fail 'Insufficient balance' unless @balance >= MIN_FARE
+    check_min_balance
     @in_journey = true
   end
-
+  
   def touch_out
+    deduct_money(MIN_FARE)
     @in_journey = false
   end
+  
+  private
+  
+  def check_min_balance
+    fail 'Insufficient balance' unless @balance >= MIN_FARE
+  end
 
+  def deduct_money(money)
+    @balance -= money
+  end
+  
+  def check_if_max_balance_exceeded(money)
+    fail "funds cannot be added: maximum balance £#{MAX_BALANCE}" if @balance + money > MAX_BALANCE
+  end
+  
 end
 
 

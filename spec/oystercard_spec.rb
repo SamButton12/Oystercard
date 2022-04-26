@@ -32,9 +32,9 @@ describe Oystercard do
     expect(subject.balance).to eq(0)
   end
 
-  it 'responds to deduct_money with 1 argument' do
-    expect(subject).to respond_to(:deduct_money).with(1).argument
-  end
+  # it 'responds to deduct_money with 1 argument' do
+  #   expect(subject).to respond_to(:touch_out)
+  # end
   
   it 'checks that new oystercard is not in journey' do
     expect(subject.in_journey?).to be false
@@ -53,11 +53,20 @@ describe Oystercard do
 
   end
 
-  it 'when card touches out, in journey is changed to false' do  
-    subject.add_money(Oystercard::MIN_FARE)
-    subject.touch_in
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+  describe '#touch_out' do
+    it 'when card touches out, in journey is changed to false' do  
+      subject.add_money(Oystercard::MIN_FARE)
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+    
+    it 'deducts fare from balance when card is touched out' do
+      subject.add_money(Oystercard::MIN_FARE)
+      subject.touch_in
+      expect { subject.touch_out }.to change { subject.balance }.by(-Oystercard::MIN_FARE)
+    end
+
   end
 
 end
