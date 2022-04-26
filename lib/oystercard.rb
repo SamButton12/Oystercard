@@ -3,6 +3,7 @@ class Oystercard
 
 
   MAX_BALANCE = 90
+  MIN_FARE = 1
 
   def initialize
     @balance = 0
@@ -27,7 +28,12 @@ class Oystercard
   end
 
   def touch_in
+    fail 'Insufficient balance' unless @balance >= MIN_FARE
     @in_journey = true
+  end
+
+  def touch_out
+    @in_journey = false
   end
 
 end
