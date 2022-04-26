@@ -4,10 +4,12 @@ describe Oystercard do
   
   let(:station){ double :station }
 
-  it 'stores the entry station' do 
-    subject.add_money(20)
-    subject.touch_in(station)
-    expect(subject.entry_station).to eq station
+  it 'returns balance' do
+    expect(subject.balance).to eq(0)
+  end
+  
+  it 'checks that new oystercard is not in journey' do
+    expect(subject.in_journey?).to be false
   end
 
   it 'creates an instance of Oystercard' do
@@ -16,17 +18,15 @@ describe Oystercard do
   
   describe '#add_money' do
     it 'does not allow user to add more than maximum funds' do
-      subject.add_money(90)
+      subject.add_money(Oystercard::MAX_BALANCE)
       expect { subject.add_money(1) }.to raise_error("funds cannot be added: maximum balance £#{Oystercard::MAX_BALANCE}")
     end
   end
 
-  it 'returns balance' do
-    expect(subject.balance).to eq(0)
-  end
-  
-  it 'checks that new oystercard is not in journey' do
-    expect(subject.in_journey?).to be false
+  it 'stores the entry station' do 
+    subject.add_money(Oystercard::MIN_FARE)
+    subject.touch_in(station)
+    expect(subject.entry_station).to eq station
   end
 
   describe '#touch_in' do
@@ -39,7 +39,6 @@ describe Oystercard do
     it 'it does not let you touch in if balance is less than min fare' do
       expect { subject.touch_in(station) }.to raise_error('Insufficient balance')
     end
-
   end
 
   describe '#touch_out' do
