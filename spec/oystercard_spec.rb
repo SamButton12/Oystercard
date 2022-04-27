@@ -4,17 +4,9 @@ describe Oystercard do
   
   let(:entry_station){ double :station }
   let(:exit_station){ double :station }
-
-  it 'returns balance' do
-    expect(subject.balance).to eq(0)
-  end
   
   it 'checks that new oystercard is not in journey' do
-    expect(subject.in_journey?).to be false
-  end
-
-  it 'creates an instance of Oystercard' do
-    expect(subject).to be_instance_of(Oystercard)
+    expect(subject).not_to be_in_journey
   end
   
   describe '#journey_log' do
@@ -23,6 +15,10 @@ describe Oystercard do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
       expect(subject.journey_log).to eq([{entry_station: entry_station, exit_station: exit_station}])
+    end
+
+    it 'returns empty list of journey log by default' do
+      expect(subject.journey_log).to be_empty
     end
   end
 
@@ -71,25 +67,5 @@ describe Oystercard do
       subject.touch_out(exit_station)
       expect(subject.entry_station).to eq nil
     end
-
-    it 'stores the exit station' do 
-      subject.add_money(Oystercard::MIN_FARE)
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
-      expect(subject.exit_station).to eq exit_station
-    end
   end
-
 end
-
-
-
-
-
-
-# it 'allows user to touch in' do
-#   expect(subject).to respond_to :touch_in
-# end
-# it 'allows user to touch out' do
-# expect(subject).to respond_to :touch_out
-# end

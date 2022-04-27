@@ -1,15 +1,14 @@
 class Oystercard
   attr_reader :balance, :entry_station, :exit_station
 
-
   MAX_BALANCE = 90
   MIN_FARE = 1
 
   def initialize
     @balance = 0
-    # @in_journey = false
-    @entry_station = nil
-    @exit_station = nil
+
+    # @entry_station = nil
+    # @exit_station = nil
     @journey = []
   end
 
@@ -26,16 +25,14 @@ class Oystercard
   
   def touch_in(station)
     check_min_balance
-    # @in_journey = true
     @entry_station = station
   end
   
   def touch_out(station)
     deduct_money(MIN_FARE)
-    # @in_journey = false
     @journey << {entry_station: entry_station, exit_station: station} 
     @entry_station = nil
-    @exit_station = station
+    # @exit_station = station
   end
   
   def journey_log
@@ -57,16 +54,3 @@ class Oystercard
   end
   
 end
-
-
-
-
-# def touch_in
-#   raise 'You cannot touch in twice' if @on_journey.empty? != true
-#   @on_journey.push "On Journey" if @on_journey.empty? == true
-# end
-
-# def touch_out
-#   raise 'You cannot touch out without touching in' if @on_journey.empty? == true
-#   @on_journey.pop if @on_journey.empty? != true
-# end
