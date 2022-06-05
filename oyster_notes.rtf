@@ -54,6 +54,15 @@ def initialise\
 end\
 \
 \
+it "refuses entry unless minimum balance met" do\
+    expect \{ subject.touch_in \}.to raise_error "Insufficient funds"\
+  end\
+\
+it 'can touch_in' do\
+    subject.add_money(1)\
+    expect(subject.touch_in).to eq "touched_in"\
+  end\
+\
 \
 \
 \
